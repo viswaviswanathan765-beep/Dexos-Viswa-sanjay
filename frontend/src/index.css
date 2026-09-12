@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-arch-primary: #1a365d;
+  --color-arch-secondary: #2d3748;
+  --color-arch-accent: #3182ce;
+  --color-arch-success: #38a169;
+  --color-arch-warning: #d69e2e;
+  --color-arch-error: #e53e3e;
+  --color-arch-surface: #1a202c;
+  --color-arch-surface-light: #2d3748;
+  --color-arch-canvas: #0f1419;
+  --color-arch-text: #e2e8f0;
+  --color-arch-text-muted: #a0aec0;
+  --color-arch-border: #4a5568;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-arch-canvas);
+  color: var(--color-arch-text);
+  overflow: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-arch-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-arch-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-arch-text-muted);
+}
+
+::selection {
+  background: var(--color-arch-accent);
+  color: white;
+}
+
+/* Modern inputs */
+input, select {
+  outline: none;
+}
+input:focus, select:focus {
+  border-color: var(--color-arch-accent);
+  box-shadow: 0 0 0 1px var(--color-arch-accent);
+}
