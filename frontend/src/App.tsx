@@ -150,6 +150,37 @@ function App() {
     setActiveFloor(0);
   }, []);
 
+  const handleRoomMove = useCallback((roomId: string, newX: number, newY: number, commit = false) => {
+    setFloorPlan(prev => {
+      if (!prev) return prev;
+      
+      const newRooms = prev.rooms.map(r => {
+        if (r.id === roomId) {
+          return { ...r, x: newX, y: newY };
+        }
+        return r;
+      });
+
+      // Quick re-validation and space analysis update
+      const { validations, score } = validateFloorPlan(config.plot, newRooms, config.relationships, config.floors);
+      const cost = calculateCost(newRooms, config.floors, config.finishQuality);
+      const analysis = calculateSpaceAnalysis(config.plot, newRooms, cost, score);
+
+      const nextState = {
+        ...prev,
+        rooms: newRooms,
+        validations,
+        cost,
+        analysis,
+      };
+
+      if (commit) {
+        commitHistory(nextState);
+      }
+      return nextState;
+    });
+  }, [config, commitHistory]);
+
   const handleChat = useCallback((msg: string) => {
     setChatMessages(prev => [...prev, { role: 'user', content: msg, timestamp: new Date().toISOString() }]);
 
@@ -232,37 +263,6 @@ function App() {
       setChatMessages(prev => [...prev, { role: 'assistant', content: response, timestamp: new Date().toISOString() }]);
     }, 600);
   }, [floorPlan, handleRoomMove]);
-
-  const handleRoomMove = useCallback((roomId: string, newX: number, newY: number, commit = false) => {
-    setFloorPlan(prev => {
-      if (!prev) return prev;
-      
-      const newRooms = prev.rooms.map(r => {
-        if (r.id === roomId) {
-          return { ...r, x: newX, y: newY };
-        }
-        return r;
-      });
-
-      // Quick re-validation and space analysis update
-      const { validations, score } = validateFloorPlan(config.plot, newRooms, config.relationships, config.floors);
-      const cost = calculateCost(newRooms, config.floors, config.finishQuality);
-      const analysis = calculateSpaceAnalysis(config.plot, newRooms, cost, score);
-
-      const nextState = {
-        ...prev,
-        rooms: newRooms,
-        validations,
-        cost,
-        analysis,
-      };
-
-      if (commit) {
-        commitHistory(nextState);
-      }
-      return nextState;
-    });
-  }, [config, commitHistory]);
 
   const handleRoomDragEnd = useCallback(() => {
     setFloorPlan(prev => {

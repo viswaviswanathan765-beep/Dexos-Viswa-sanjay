@@ -58,7 +58,7 @@ function expandRoomSpecs(specs: RoomSpec[]): { type: RoomType; name: string; min
 }
 
 /** Sort rooms: HIGH first, then MEDIUM, then LOW, with larger rooms first within same priority */
-function sortByPriority(rooms: { priority: Priority; minArea: number }[]): typeof rooms {
+function sortByPriority<T extends { priority: Priority; minArea: number }>(rooms: T[]): T[] {
   const priorityOrder: Record<Priority, number> = { HIGH: 0, MEDIUM: 1, LOW: 2 };
   return [...rooms].sort((a, b) => {
     const pDiff = priorityOrder[a.priority] - priorityOrder[b.priority];

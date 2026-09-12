@@ -202,7 +202,7 @@ export const FloorPlanSVG: React.FC<FloorPlanSVGProps> = ({
         centerOnInit
         panning={{ disabled: dragState !== null }}
         wheel={{ step: 0.1 }}
-        onTransformed={(ref) => setScale(ref.state.scale)}
+        onTransform={(ref: any) => setScale(ref.state.scale)}
       >
         <>
           <Controls />
